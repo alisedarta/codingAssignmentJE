@@ -81,8 +81,16 @@ public class Restaurants {
 			System.out.println(instance.getString("name"));
 			//Get restaurant rating
 			System.out.println(instance.getJSONObject("rating").get("starRating"));
+			//Get Address
+			System.out.println(instance.getJSONObject("address").get("firstLine") + ", " + instance.getJSONObject("address").get("postalCode") + ", " + instance.getJSONObject("address").get("city") );
+			//Get cuisines
+			final JSONArray cusineArray = instance.getJSONArray("cuisines");
+			for (int j = 0; j < cusineArray.length(); j++) {
+				String cusineName = cusineArray.getJSONObject(j).getString("name");
+				System.out.println(cusineName);
+			}
+			//System.out.println(instance.getJSONArray("cuisines"));
 			
-      
     }
 
             }
