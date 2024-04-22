@@ -34,7 +34,7 @@ public class Restaurants {
 
 	public Restaurants(String restaurantName, double rating, String address, String...cusineList)
 	{
-		//backup
+		//Example constructor
 		this.restaurantName = restaurantName;
 		this.rating = rating;
 		this.address = address;
@@ -78,18 +78,26 @@ public class Restaurants {
 				final JSONObject instance = restaurants.getJSONObject(i);
 				
 			//Get restaurant name
-			System.out.println(instance.getString("name"));
-			//Get restaurant rating
-			System.out.println(instance.getJSONObject("rating").get("starRating"));
-			//Get Address
-			System.out.println(instance.getJSONObject("address").get("firstLine") + ", " + instance.getJSONObject("address").get("postalCode") + ", " + instance.getJSONObject("address").get("city") );
+			System.out.println("Name: " + instance.getString("name"));
 			//Get cuisines
 			final JSONArray cusineArray = instance.getJSONArray("cuisines");
+			System.out.print("Cuisines: ");
 			for (int j = 0; j < cusineArray.length(); j++) {
 				String cusineName = cusineArray.getJSONObject(j).getString("name");
-				System.out.println(cusineName);
+				System.out.print(cusineName);
+				//Add comma between values
+				if (j != cusineArray.length() - 1){
+					System.out.print(", ");
+				}
+				else {System.out.println();}
 			}
-			//System.out.println(instance.getJSONArray("cuisines"));
+			//Get restaurant rating
+			System.out.println("Rating: " + instance.getJSONObject("rating").get("starRating"));
+			//Get Address
+			System.out.println("Address: " + instance.getJSONObject("address").get("firstLine") + ", " + instance.getJSONObject("address").get("postalCode") + ", " + instance.getJSONObject("address").get("city") );
+			
+			System.out.println("________________");
+			
 			
     }
 
