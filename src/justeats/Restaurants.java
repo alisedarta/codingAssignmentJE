@@ -12,9 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 /**
  *
@@ -42,23 +40,29 @@ public class Restaurants {
 		
 	}
 	public static void main(String[] args) {
-		
-		
-        try {
-
-            URL url = new URL("https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/BN29UR");
-
+		printResults(fetchJson("BN29UR"));	
+	}
+	
+	private static JSONObject fetchJson(String postcode){
+		try {
+			//Set up URL
+            URL url = new URL("https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode/" + postcode);
+			System.out.println("List of restaurants for postcode " + postcode + ":");
+			//GET API
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
-
+			
             //Getting the response code
             int responsecode = conn.getResponseCode();
 			//test if working
-			System.out.println(responsecode);
+			//System.out.println(responsecode);
+			
+			//Check for non-OK response code
             if (responsecode != 200) {
                 throw new RuntimeException("HttpResponseCode: " + responsecode);
-            } else {
+            } 
+			else{
 				
                 String response = "";
                 Scanner scanner = new Scanner(url.openStream());
@@ -71,58 +75,53 @@ public class Restaurants {
                 //Close the scanner
                 scanner.close();
 				//System.out.print(response);
+				
 				//Turn response string into JSON Object
 				final JSONObject obj = new JSONObject(response);
-				final JSONArray restaurants = obj.getJSONArray("restaurants");
-				for (int i = 0; i < 10; ++i) {
-				final JSONObject instance = restaurants.getJSONObject(i);
-				
-			//Get restaurant name
-			System.out.println("Name: " + instance.getString("name"));
-			//Get cuisines
-			final JSONArray cusineArray = instance.getJSONArray("cuisines");
-			System.out.print("Cuisines: ");
-			for (int j = 0; j < cusineArray.length(); j++) {
-				String cusineName = cusineArray.getJSONObject(j).getString("name");
-				System.out.print(cusineName);
-				//Add comma between values
-				if (j != cusineArray.length() - 1){
-					System.out.print(", ");
-				}
-				else {System.out.println();}
+				return obj;
 			}
-			//Get restaurant rating
-			System.out.println("Rating: " + instance.getJSONObject("rating").get("starRating"));
-			//Get Address
-			System.out.println("Address: " + instance.getJSONObject("address").get("firstLine") + ", " + instance.getJSONObject("address").get("postalCode") + ", " + instance.getJSONObject("address").get("city") );
-			
-			System.out.println("________________");
-			
-			
-    }
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    
-		//backup test
-		// TODO code application logic here
-		Restaurants Res1 = new Restaurants("Subway", 3.5, "Brighton", "healthy", "yummy", "okay");
-		//Console.WriteLine(Res1.restaurantName, +" " + Res1.rating + " " + Res1.address);
-		System.out.println("Restaurant name: " + Res1.restaurantName);
-		System.out.println("Rating: " + Res1.rating);
-		System.out.println("Address: " + Res1.address);
-		//System.out.println(Arrays.toString(cusines.toArray()));
-		//cusines.forEach(System.out::print); 
-		//cusines.stream().forEach(e -> 
-		//		System.out.print(e + " "));
-		String result = cusines.stream()
-        .map(e -> e)
-        .collect(Collectors.joining(", "));
-		System.out.println(result);
-		
+		}
+			catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 	}
 	
+	private static void printResults(JSONObject obj){
+		//Get restaurant array
+		final JSONArray restaurants = obj.getJSONArray("restaurants");
+				//Loop through first ten restaurants returned
+			for (int i = 0; i < 10; ++i) {
+				final JSONObject instance = restaurants.getJSONObject(i);
+				//Add seperating line
+				System.out.println("________________");
+				
+				//Get restaurant name
+				System.out.println("Name: " + instance.getString("name"));
+				
+				//Get cuisines
+				final JSONArray cusineArray = instance.getJSONArray("cuisines");
+				System.out.print("Cuisines: ");
+				//Loop through Cuisine array to return each element
+				for (int j = 0; j < cusineArray.length(); j++) {
+					String cusineName = cusineArray.getJSONObject(j).getString("name");
+					System.out.print(cusineName);
+					//Add comma between values
+					if (j != cusineArray.length() - 1){
+						System.out.print(", ");
+					}
+					else {
+						System.out.println();
+					}
+				}
+				
+				//Get restaurant rating
+				System.out.println("Rating: " + instance.getJSONObject("rating").get("starRating"));
+				
+				//Get Address
+				System.out.println("Address: " + instance.getJSONObject("address").get("firstLine") + ", " + instance.getJSONObject("address").get("postalCode") + ", " + instance.getJSONObject("address").get("city") );
+			
+				
+				}
+	}
 }
