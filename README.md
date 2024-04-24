@@ -8,8 +8,6 @@
 	Where yourfilepath is the path to the dist folder.
 
 2. Assumptions making this solution:
-   
-	-It wasn’t specified if we need to extract data from the API manually or call the API in our program but I assumed the latter.
 
 	-It wasn’t specified how to display the address/what fields it should include, so I decided to not include the coordinates, as it’s not something I can see in apps/solutions often.
 
@@ -21,7 +19,7 @@
 
 	-The application takes a few seconds to return the restaurant list, so it would be worth looking into how to optimize the program to improve performance. As a quick solution for a program where specifically ten restaurants need to be displayed, I could have not scanned the whole API response but stopped after a certain amount of lines. Otherwise, I would need to look more into handling APIs and JSON files in java to see how I can improve the performance. 
 
-	-Adding int parameter to printResults() to customize how many restaurants need to be added
+	-Adding int parameter to printResults() to customize how many restaurants need to be returned
 
 	-Allow user to enter the postcode they want to see the restaurant data for
 
