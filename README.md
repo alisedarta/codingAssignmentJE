@@ -1,11 +1,11 @@
 # codingAssignmentJE
 1. To run the program I’ve included a dist folder containing a .jar file that can be run from command prompt (you need Java installed on your computer), so there is no need to compile the code.
 
-To run the application from cmd enter:
+	To run the application from cmd enter:
 
-java -jar “yourfilepath\dist\JustEats.jar”
+	java -jar “yourfilepath\dist\JustEats.jar”
 
-Where yourfilepath is the path to the dist folder.
+	Where yourfilepath is the path to the dist folder.
 
 2. Assumptions making this solution:
    
